@@ -27,7 +27,4 @@ jobs:
     needs: build
     steps:
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@release@v2
-      with:
-        BRANCH: gh-pages
-        FOLDER: build # The folder where the build artifacts are located
+      run: npx gh-pages -d build
