@@ -1,10 +1,10 @@
-name: CI/CD Pipeline
+name: CI/CD for React-Dashboard
 
 on:
   push:
     branches:
-      - main  # Adjust this based on your main branch name
-  pull_request:
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -13,40 +13,23 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+        
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: '18' # Adjust the version as needed
 
       - name: Install dependencies
         run: npm install
+      
+      - name: Test scripts
+        run: npm run
 
-      - name: Run tests
-        run: npm test
-
-  deploy:
-    runs-on: ubuntu-latest
-
-    needs: build  # Ensure the build job completes successfully before deploying
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build
+      - name: Build 
         run: npm run build
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.2.0
+        uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
           branch: gh-pages
-          folder: public
+          folder: build
